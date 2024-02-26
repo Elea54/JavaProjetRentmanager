@@ -45,7 +45,7 @@ public class CliVehicle {
             vehicleService.delete(vehicle);
             System.out.println("Le véhicule a bien été supprimé.");
         }catch(Exception e){
-            System.out.println("Une erreur a eu lieu lors de la suppression du véhicule.");
+            System.out.println(e.getMessage());
         }
     }
 

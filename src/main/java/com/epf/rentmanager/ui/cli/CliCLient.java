@@ -48,7 +48,7 @@ public class CliCLient {
             clientService.create(client);
             System.out.println("Le client a bien été créé.");
         }catch(DateTimeException e){
-            System.out.println("Le système n'est pas au bon format yyyy-MM-dd). Le client n'a pas été créé");
+            System.out.println("Le système n'est pas au bon format yyyy-MM-dd). Le client n'a pas été créé.");
         }
     }
 
@@ -61,7 +61,7 @@ public class CliCLient {
             clientService.delete(client);
             System.out.println("Le client a bien été supprimé.");
         }catch(Exception e){
-            System.out.println("Une erreur a eu lieu lors de la suppression du client.");
+            System.out.println(e.getMessage());
         }
     }
 }

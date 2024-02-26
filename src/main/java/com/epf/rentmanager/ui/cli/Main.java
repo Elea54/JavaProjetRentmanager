@@ -5,9 +5,7 @@ import com.epf.rentmanager.exeptions.ServiceException;
 import java.util.Scanner;
 
 public class Main {
-    //TODO : gestion erreur si mauvaise date
     //TODO : bien clean le git pour ne plus avoir les fichiers .idea et .settings
-    //TODo : remplacer les string des erreurs par des e.getMessages()
 
     public static void main(String[] args) throws ServiceException {
         boolean cliIsRunning = true;
