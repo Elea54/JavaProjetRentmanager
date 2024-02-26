@@ -37,7 +37,7 @@ public class ClientService {
 		try{
 			clientDao.create(client);
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu lors de la creation du client.");
+			throw new ServiceException(e.getMessage());
 		}
 		return client.getId();
 	}
@@ -70,7 +70,7 @@ public class ClientService {
 			}
 			throw new ServiceException("Le client n°" + id + " n'a pas éré trouvé dans la db.");
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pendant la récupération du client.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 
@@ -83,7 +83,7 @@ public class ClientService {
 
 			throw new ServiceException("Il n'y a pas de client dans la db.");
 		} catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pednant la récupération de la liste de clients.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 }

@@ -1,11 +1,8 @@
 package com.epf.rentmanager.ui.cli;
 
 import com.epf.rentmanager.exeptions.ServiceException;
-import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
-import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
-import com.epf.rentmanager.service.VehicleService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +17,6 @@ public class CliReservation {
     private CliVehicle cliVehicle = new CliVehicle();
     private ReservationService reservationService = ReservationService.getInstance();
     public void createReservation(Scanner scanner) throws ServiceException {
-
         System.out.println("\nListe des clients :");
         cliCLient.listAllClients();
         System.out.println("\nListe des voitures :");
@@ -38,11 +34,10 @@ public class CliReservation {
         LocalDate fin = LocalDate.parse(dateFin, formatter);
         Reservation reservation = new Reservation(0, idClient, idVehicle, debut, fin);
         reservationService.create(reservation);
-
     }
 
     public void findReservations(Scanner scanner) throws ServiceException {
-        System.out.println("\nRecherche de réservations :\nLister tout : 1\n Par client : 2\n Par véhicule : 3");
+        System.out.println("\nRecherche de réservations :\nLister tout : 1\nPar client : 2\nPar véhicule : 3");
         String choixClient = scanner.nextLine();
         if(choixClient.equals("1")){
             listAllReservations();

@@ -32,7 +32,7 @@ public class ReservationService {
 		try{
 			reservationDao.create(reservation);
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu lors de la creation de la reservation.");
+			throw new ServiceException(e.getMessage());
 		}
 		return reservation.getId();
 	}
@@ -41,7 +41,7 @@ public class ReservationService {
 		try{
 			reservationDao.delete(reservationId);
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu lors de la suppression de la reservation.");
+			throw new ServiceException(e.getMessage());
 		}
 		return reservationId;
 	}
@@ -55,7 +55,7 @@ public class ReservationService {
 			}
 			throw new ServiceException("Aucune reservation trouvée pour le client n°" + clientId + ".");
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pendant la récupération des réservations.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 
@@ -68,7 +68,7 @@ public class ReservationService {
 			}
 			throw new ServiceException("Aucune reservation trouvée pour le véhicule n°" + vehicleId + ".");
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pendant la récupération des réservations.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 
@@ -81,7 +81,7 @@ public class ReservationService {
 
 			throw new ServiceException("Il n'y a pas de réservation dans la db.");
 		} catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pendant la récupération de la liste de réservations.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 }

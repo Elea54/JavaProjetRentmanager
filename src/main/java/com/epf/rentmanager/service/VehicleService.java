@@ -57,7 +57,7 @@ public class VehicleService {
 			);
 			vehicleDao.delete(vehicle);
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu lors de la suppression du véhicule.");
+			throw new ServiceException(e.getMessage());
 		}
 		return vehicle.getId();
 	}
@@ -70,7 +70,7 @@ public class VehicleService {
 			}
 			throw new ServiceException("Le véhicule n°" + id + " n'a pas éré trouvé dans la db.");
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pendant la récupération du véhicule.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 
@@ -83,7 +83,7 @@ public class VehicleService {
 
 			throw new ServiceException("Il n'y a pas de véhicule dans la db.");
 		} catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu pednant la récupération de la liste de véhicules.");
+			throw new ServiceException(e.getMessage());
 		}
 	}
 }

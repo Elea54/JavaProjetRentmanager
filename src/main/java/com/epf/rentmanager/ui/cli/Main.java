@@ -5,7 +5,6 @@ import com.epf.rentmanager.exeptions.ServiceException;
 import java.util.Scanner;
 
 public class Main {
-    //TODO : voir pourquoi la colonne model de voiture n'existe pas dans la database. La rajouter ?
     //TODO : gestion erreur si mauvaise date
     //TODO : bien clean le git pour ne plus avoir les fichiers .idea et .settings
     //TODo : remplacer les string des erreurs par des e.getMessages()
@@ -67,7 +66,7 @@ public class Main {
     }
     public static String choixDuClient(Scanner scanner){
         System.out.println("\nQuitter : 0\nCréer un client : 1\nLister les clients : 2\nSupprimer un client : 3" +
-                "\nCréer une voiture : 4\nLister les voitures : 5\nSupprimer une voiture : 6" +
+                "\nCréer un véhicule : 4\nLister les véhicules : 5\nSupprimer un véhicule : 6" +
                 "\nCréer une réservation : 7\nChercher des réservations : 8\nSupprimer une réservation : 9");
         return scanner.nextLine();
     }
