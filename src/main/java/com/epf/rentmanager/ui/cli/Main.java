@@ -6,8 +6,9 @@ import java.util.Scanner;
 
 public class Main {
     //TODO : voir pourquoi la colonne model de voiture n'existe pas dans la database. La rajouter ?
-    //TODO : voir une solution pour assurer que les id sont bien des long et les retaper sinon
-    //TODO : supprimer une réservation lorsqu'un client ou un véhicule est supprimé
+    //TODO : gestion erreur si mauvaise date
+    //TODO : bien clean le git pour ne plus avoir les fichiers .idea et .settings
+    //TODo : remplacer les string des erreurs par des e.getMessages()
 
     public static void main(String[] args) throws ServiceException {
         boolean cliIsRunning = true;

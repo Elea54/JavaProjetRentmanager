@@ -13,8 +13,9 @@ import com.epf.rentmanager.model.Reservation;
 public class ClientService {
 
 	private ClientDao clientDao;
-	private ReservationDao reservationDao;
+	private ReservationDao reservationDao = ReservationDao.getInstance();
 	public static ClientService instance;
+	private ReservationService reservationService = ReservationService.getInstance();
 	
 	private ClientService() {
 		this.clientDao = ClientDao.getInstance();
@@ -43,19 +44,19 @@ public class ClientService {
 
 	public long delete(Client client) throws ServiceException{
 		try{
+			List<Reservation> reservationsByClientId = reservationService.findByClientId(client.getId());
+			reservationsByClientId.forEach(
+					reservation -> {
+						try {
+							reservationDao.delete(reservation.getId());
+						} catch (DaoException e) {
+							throw new RuntimeException(e);
+						}
+					}
+				);
 			clientDao.delete(client);
-//			List<Reservation> reservationsByClientId = reservationDao.findResaByClientId(client.getId());
-//			reservationsByClientId.forEach(
-//					reservation -> {
-//                        try {
-//                            reservationDao.delete(reservation);
-//                        } catch (DaoException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//			);
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu lors de la suppression du client.");
+			throw new ServiceException(e.getMessage());
 		}
 		return client.getId();
 	}

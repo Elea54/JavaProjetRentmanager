@@ -18,7 +18,6 @@ public class CliReservation {
     }
     private CliCLient cliCLient = new CliCLient();
     private CliVehicle cliVehicle = new CliVehicle();
-
     private ReservationService reservationService = ReservationService.getInstance();
     public void createReservation(Scanner scanner) throws ServiceException {
 
@@ -28,23 +27,16 @@ public class CliReservation {
         cliVehicle.listAllVehicles();
         System.out.println("Id du client : ");
         long idClient = Long.parseLong(scanner.nextLine());
-
-        //TODO : voir comment faire quand ce n'est pas un long
-
         System.out.println("Id du véhicule : ");
         long idVehicle = Long.parseLong(scanner.nextLine());
-
         System.out.println("Date de début de réservation : (format yyyy-MM-dd)");
         String dateDebut = scanner.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate debut = LocalDate.parse(dateDebut, formatter);
-
         System.out.println("Date de fin de réservation : (format yyyy-MM-dd");
         String dateFin = scanner.nextLine();
-        LocalDate fin = LocalDate.parse(dateDebut, formatter);
-
+        LocalDate fin = LocalDate.parse(dateFin, formatter);
         Reservation reservation = new Reservation(0, idClient, idVehicle, debut, fin);
-
         reservationService.create(reservation);
 
     }

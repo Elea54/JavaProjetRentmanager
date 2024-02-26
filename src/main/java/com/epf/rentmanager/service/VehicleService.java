@@ -12,7 +12,7 @@ import com.epf.rentmanager.model.Vehicle;
 public class VehicleService {
 
 	private VehicleDao vehicleDao;
-	private ReservationDao reservationDao;
+	private ReservationDao reservationDao = ReservationDao.getInstance();
 	public static VehicleService instance;
 	
 	private VehicleService() {
@@ -38,24 +38,24 @@ public class VehicleService {
 		try{
 			vehicleDao.create(vehicle);
 		}catch (DaoException e){
-			throw new ServiceException("Une erreur a eu lieu lors de la creation du véhicule.");
+			throw new ServiceException(e.getMessage());
 		}
 		return vehicle.getId();
 	}
 
 	public long delete(Vehicle vehicle) throws ServiceException{
 		try{
+			List<Reservation> reservationsByVehicleId = reservationDao.findResaByVehicleId(vehicle.getId());
+			reservationsByVehicleId.forEach(
+					reservation -> {
+						try {
+							reservationDao.delete(reservation.getId());
+						} catch (DaoException e) {
+							throw new RuntimeException(e);
+						}
+					}
+			);
 			vehicleDao.delete(vehicle);
-//			List<Reservation> reservationsByVehicleId = reservationDao.findResaByVehicleId(vehicle.getId());
-//			reservationsByVehicleId.forEach(
-//					reservation -> {
-//						try {
-//							reservationDao.delete(reservation);
-//						} catch (DaoException e) {
-//							throw new RuntimeException(e);
-//						}
-//					}
-//			);
 		}catch (DaoException e){
 			throw new ServiceException("Une erreur a eu lieu lors de la suppression du véhicule.");
 		}
