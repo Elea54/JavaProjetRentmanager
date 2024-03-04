@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/cars")
-public class VehicleListServlet extends HttpServlet {
+@WebServlet("/cars/create")
+public class VehicleCreateServlet extends HttpServlet {
 
 	/**
 	 * 
@@ -22,15 +22,21 @@ public class VehicleListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse
+			response) throws ServletException, IOException {
 		VehicleService vehicleService = VehicleService.getInstance();
-		List<Vehicle> listvehicules = null;
+
+		String constructeur = request.getParameter("manufacturer");
+		String modele = request.getParameter("modele");
+		int nb_places = Integer.parseInt(request.getParameter("seats")) ;
+		Vehicle vehicle = new Vehicle(0, constructeur, modele, nb_places);
         try {
-            listvehicules = vehicleService.findAll();
+            vehicleService.create(vehicle);
         } catch (ServiceException e) {
             throw new RuntimeException(e.getMessage());
         }
-		request.setAttribute("vehicles", listvehicules);
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/list.jsp").forward(request, response);
+		response.sendRedirect("/rentmanager/cars");
+    }
 	}
-
-}
