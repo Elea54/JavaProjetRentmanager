@@ -4,12 +4,12 @@ public class Vehicle {
     private long id;
     private String constructeur;
     private String modele;
-    private boolean nb_places;
+    private int nb_places;
 
     public Vehicle() {
     }
 
-    public Vehicle(long id, String constructeur, String modele, boolean nb_places) {
+    public Vehicle(long id, String constructeur, String modele, int nb_places) {
         this.id = id;
         this.constructeur = constructeur;
         this.modele = modele;
@@ -40,11 +40,11 @@ public class Vehicle {
         this.modele = modele;
     }
 
-    public boolean getNb_places() {
+    public int getNb_places() {
         return nb_places;
     }
 
-    public void setNb_places(boolean nb_places) {
+    public void setNb_places(int nb_places) {
         this.nb_places = nb_places;
     }
 

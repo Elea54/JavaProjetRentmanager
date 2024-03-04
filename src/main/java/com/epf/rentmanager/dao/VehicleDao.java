@@ -32,7 +32,7 @@ public class VehicleDao {
 			PreparedStatement ps = connection.prepareStatement(CREATE_VEHICLE_QUERY)){
 			ps.setString(1, vehicle.getConstructeur());
 			ps.setString(2, vehicle.getModele());
-			ps.setBoolean(3, vehicle.getNb_places());
+			ps.setInt(3, vehicle.getNb_places());
 			ps.execute();
 
 		}catch (SQLException e){
@@ -64,7 +64,7 @@ public class VehicleDao {
 				vehicle.setId(id);
 				vehicle.setConstructeur(resultSet.getString(2));
 				vehicle.setModele(resultSet.getString(3));
-				vehicle.setNb_places(resultSet.getBoolean(4));
+				vehicle.setNb_places(resultSet.getInt(4));
 			}
 
 		}catch (SQLException e){
@@ -83,7 +83,7 @@ public class VehicleDao {
 				vehicle.setId(resultSet.getLong(1));
 				vehicle.setConstructeur(resultSet.getString(2));
 				vehicle.setModele(resultSet.getString(3));
-				vehicle.setNb_places(resultSet.getBoolean(4));
+				vehicle.setNb_places(resultSet.getInt(4));
 				listOfAllVehicules.add(vehicle);
 			}
 

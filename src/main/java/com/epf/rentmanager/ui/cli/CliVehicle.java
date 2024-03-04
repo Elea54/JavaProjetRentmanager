@@ -31,7 +31,19 @@ public class CliVehicle {
             System.out.println("Le modèle entré est nul. Réessayer.");
             vehicleModel = scanner.nextLine();
         }
-        Vehicle vehicle = new Vehicle(0, nameConstructor, vehicleModel, true);
+        System.out.println("Nombre de places :");
+        int nbrPlaces = 0;
+        boolean idIsValid = false;
+        while (!idIsValid) {
+            try {
+                String input = scanner.nextLine();
+                nbrPlaces = Integer.parseInt(input);
+                idIsValid = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Erreur : Entrée invalide. Veuillez saisir un nombre entier long.");
+            }
+        }
+        Vehicle vehicle = new Vehicle(0, nameConstructor, vehicleModel, nbrPlaces);
         vehicleService.create(vehicle);
         System.out.println("Le vehicule a été créé.");
     }

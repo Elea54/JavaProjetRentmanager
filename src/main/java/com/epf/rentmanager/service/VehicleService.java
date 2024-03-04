@@ -32,7 +32,7 @@ public class VehicleService {
 		if(vehicle.getConstructeur() == null){
 			throw new ServiceException("Le constructeur du véhicule est nul.");
 		}
-		else if (!vehicle.getNb_places()){
+		else if (vehicle.getNb_places()<1){
 			throw new ServiceException("le nombre de places est inférieur à 1");
 		}
 		try{
