@@ -9,26 +9,19 @@ import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ClientService {
 
 	private ClientDao clientDao;
 	private ReservationDao reservationDao = ReservationDao.getInstance();
 	public static ClientService instance;
 	private ReservationService reservationService = ReservationService.getInstance();
-	
-	private ClientService() {
-		this.clientDao = ClientDao.getInstance();
+
+	private ClientService(ClientDao clientDao){
+		this.clientDao = clientDao;
 	}
-	
-	public static ClientService getInstance() {
-		if (instance == null) {
-			instance = new ClientService();
-		}
-		
-		return instance;
-	}
-	
 	
 	public long create(Client client) throws ServiceException {
 		if(client.getNom()==null || client.getPrenom() == null){
