@@ -1,3 +1,4 @@
+<%@ page import="com.epf.rentmanager.servlet.ReservationListServlet" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html>
@@ -35,42 +36,27 @@
                                     <th>Action</th>
                                 </tr>
                                 <tr>
-                                    <td>1.</td>
-                                    <td>Renault Clio</td>
-                                    <td>John Doe</td>
-                                    <td>10/01/2019</td>
-                                    <td>13/01/2019</td>
-                                    <td>
-                                        <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/cars?id=1">
-                                            <i class="fa fa-play"></i>
-                                        </a>
-                                        <a class="btn btn-success disabled" href="#">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-danger disabled" href="#">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
+                                    <c:forEach items="${reservations}" var="reservation">
+                                        <td>${reservation.id}</td>
+                                        <td>${reservation.vehicle_id}</td>
+<%--                                        <td>${ReservationListServlet.getClientId(reservation.client_id)}</td>--%>
+                                        <td>${reservation.client_id}</td>
+                                        <td>${reservation.debut}</td>
+                                        <td>${reservation.fin}</td>
+                                        <td>
+                                            <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/cars?id=2">
+                                                <i class="fa fa-play"></i>
+                                            </a>
+                                            <a class="btn btn-success disabled" href="#">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-danger disabled" href="#">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
                                 </tr>
+                                    </c:forEach>
 
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Citroen C2</td>
-                                    <td>Jane Doe</td>
-                                    <td>10/01/2019</td>
-                                    <td>13/01/2019</td>
-                                    <td>
-                                        <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/cars?id=2">
-                                            <i class="fa fa-play"></i>
-                                        </a>
-                                        <a class="btn btn-success disabled" href="#">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-danger disabled" href="#">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
                             </table>
                         </div>
                         <!-- /.box-body -->
