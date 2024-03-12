@@ -84,4 +84,14 @@ public class ReservationService {
 			throw new ServiceException(e.getMessage());
 		}
 	}
+
+	public long count() throws ServiceException {
+		long nbrReservations;
+		try{
+			nbrReservations = reservationDao.count();
+		}catch (DaoException e){
+			throw new ServiceException(e.getMessage());
+		}
+		return nbrReservations;
+	}
 }

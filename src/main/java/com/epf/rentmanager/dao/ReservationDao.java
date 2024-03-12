@@ -27,7 +27,8 @@ public class ReservationDao {
 	private static final String FIND_RESERVATIONS_BY_CLIENT_QUERY = "SELECT id, vehicle_id, debut, fin FROM Reservation WHERE client_id=?;";
 	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
-		
+	private static final String COUNT_RESERVATIONS_QUERY = "SELECT COUNT(id) AS count FROM Reservation;";
+
 	public long create(Reservation reservation) throws DaoException {
 		try(Connection connection = ConnectionManager.getConnection();
 			PreparedStatement ps = connection.prepareStatement(CREATE_RESERVATION_QUERY)){
@@ -42,7 +43,7 @@ public class ReservationDao {
 		}
 		return reservation.getId();
 	}
-	
+
 	public long delete(long reservationId) throws DaoException {
 		try(Connection connection = ConnectionManager.getConnection();
 			PreparedStatement ps = connection.prepareStatement(DELETE_RESERVATION_QUERY)){
@@ -55,7 +56,7 @@ public class ReservationDao {
 		return reservationId;
 	}
 
-	
+
 	public List<Reservation> findResaByClientId(long clientId) throws DaoException {
 		ArrayList<Reservation> reservationsByClient = new ArrayList<>();
 		try(Connection connection = ConnectionManager.getConnection();
@@ -77,7 +78,7 @@ public class ReservationDao {
 		}
 		return reservationsByClient;
 	}
-	
+
 	public List<Reservation> findResaByVehicleId(long vehicleId) throws DaoException {
 		ArrayList<Reservation> reservationsByVehicle = new ArrayList<>();
 		try(Connection connection = ConnectionManager.getConnection();
@@ -119,5 +120,19 @@ public class ReservationDao {
 			throw new DaoException();
 		}
 		return listOfAllReservations;
+	}
+
+	public long count() throws DaoException {
+		long nbrReservations = 0;
+		try (Connection connection = ConnectionManager.getConnection();
+			 PreparedStatement ps = connection.prepareStatement(COUNT_RESERVATIONS_QUERY);){
+			ResultSet resultSet = ps.executeQuery();
+			if(resultSet.next()){
+				nbrReservations = resultSet.getLong("count");
+			}
+		}catch(SQLException e){
+			throw new DaoException();
+		}
+		return nbrReservations;
 	}
 }

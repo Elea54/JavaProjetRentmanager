@@ -86,4 +86,14 @@ public class VehicleService {
 			throw new ServiceException(e.getMessage());
 		}
 	}
+
+	public long count() throws ServiceException {
+		long nbrVehicle;
+		try{
+			nbrVehicle = vehicleDao.count();
+		}catch (DaoException e){
+			throw new ServiceException(e.getMessage());
+		}
+		return nbrVehicle;
+	}
 }

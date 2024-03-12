@@ -41,7 +41,6 @@ public class ClientService {
 		}
 		return client.getId();
 	}
-
 	public long delete(Client client) throws ServiceException{
 		try{
 			List<Reservation> reservationsByClientId = reservationService.findByClientId(client.getId());
@@ -60,7 +59,6 @@ public class ClientService {
 		}
 		return client.getId();
 	}
-
 	public Client findById(long id) throws ServiceException {
 		try{
 			Client client = clientDao.findById(id);
@@ -85,5 +83,15 @@ public class ClientService {
 		} catch (DaoException e){
 			throw new ServiceException(e.getMessage());
 		}
+	}
+
+	public long count() throws ServiceException {
+		long nbrClient;
+		try{
+			nbrClient = clientDao.count();
+		}catch (DaoException e){
+			throw new ServiceException(e.getMessage());
+		}
+		return nbrClient;
 	}
 }
