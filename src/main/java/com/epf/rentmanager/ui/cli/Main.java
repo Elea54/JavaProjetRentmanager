@@ -5,7 +5,8 @@ import com.epf.rentmanager.exeptions.ServiceException;
 import java.util.Scanner;
 
 public class Main {
-    //TODO : bien clean le git pour ne plus avoir les fichiers .idea et .settings
+    //TODO : Finir la partie réservation, avec les vrais noms
+    //TODO : afficher les détails des clients, faire les autres boutons si le temps, mais en bonnus
 
     public static void main(String[] args) throws ServiceException {
         boolean cliIsRunning = true;
