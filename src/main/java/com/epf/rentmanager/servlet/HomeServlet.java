@@ -50,5 +50,4 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("nbrReservations", nbrReservations);
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
 	}
-
 }

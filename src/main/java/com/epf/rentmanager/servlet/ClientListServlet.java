@@ -2,9 +2,7 @@ package com.epf.rentmanager.servlet;
 
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
-import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
-import com.epf.rentmanager.service.VehicleService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,4 +33,19 @@ public class ClientListServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
 	}
 
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String inputId = request.getParameter("id");
+		Long clientId = Long.parseLong(inputId);
+		if(clientId >= 0){
+			ClientService clientService = ClientService.getInstance();
+			try {
+				Client client = clientService.findById(clientId);
+				clientService.delete(client);
+			} catch (ServiceException e) {
+				throw new RuntimeException(e);
+			}
+			response.sendRedirect("/rentmanager/home");
+		}
+	}
 }

@@ -1,5 +1,12 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
+<script>
+    function deleteClient(clientId) {
+        fetch('${pageContext.request.contextPath}/users?id=' + clientId, {
+            method: 'DELETE'
+        })
+    }
+</script>
 <html>
 <%@include file="/WEB-INF/views/common/head.jsp"%>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -48,7 +55,7 @@
                                         <a class="btn btn-success disabled" href="#">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger disabled" href="#">
+                                        <a class="btn btn-danger" href="#" onclick="deleteClient(${client.id})">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>

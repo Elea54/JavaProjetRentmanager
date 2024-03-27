@@ -18,8 +18,6 @@ import java.util.List;
 @WebServlet("/rents")
 public class ReservationListServlet extends HttpServlet {
 
-	//TODO : Faire en sorte que le code affiche les noms complets de la voiture et du client à chaque ligne
-
 	/**
 	 * 
 	 */
