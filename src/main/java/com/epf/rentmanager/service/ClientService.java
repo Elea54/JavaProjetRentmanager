@@ -3,24 +3,27 @@ package com.epf.rentmanager.service;
 
 import java.util.List;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClientService {
 
 	private ClientDao clientDao;
-	private ReservationDao reservationDao = ReservationDao.getInstance();
-	public static ClientService instance;
-	private ReservationService reservationService = ReservationService.getInstance();
 
-	private ClientService(ClientDao clientDao){
+	private ReservationDao reservationDao;
+
+	private ClientService(ClientDao clientDao, ReservationDao reservationDao){
 		this.clientDao = clientDao;
+		this.reservationDao = reservationDao;
 	}
 	
 	public long create(Client client) throws ServiceException {
@@ -36,7 +39,7 @@ public class ClientService {
 	}
 	public long delete(Client client) throws ServiceException{
 		try{
-			List<Reservation> reservationsByClientId = reservationService.findByClientId(client.getId());
+			List<Reservation> reservationsByClientId = reservationDao.findResaByClientId(client.getId());
 			reservationsByClientId.forEach(
 					reservation -> {
 						try {

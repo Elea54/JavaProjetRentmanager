@@ -1,8 +1,11 @@
 package com.epf.rentmanager.ui.cli;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.service.ClientService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -10,10 +13,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class CliCLient {
+    ApplicationContext context = new
+            AnnotationConfigApplicationContext(AppConfiguration.class);
+    ClientService clientService = context.getBean(ClientService.class);
     public CliCLient() {
     }
-   ClientService clientService = ClientService.getInstance();
     public void listAllClients() throws ServiceException {
         List<Client> allClientsList= clientService.findAll();
         System.out.println("Nombre total de clients : "+ allClientsList.size());

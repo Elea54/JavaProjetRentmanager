@@ -1,10 +1,13 @@
 package com.epf.rentmanager.servlet;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +28,10 @@ public class ClientDetailsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ClientService clientService = ClientService.getInstance();
-		ReservationService reservationService = ReservationService.getInstance();
+		ApplicationContext context = new
+				AnnotationConfigApplicationContext(AppConfiguration.class);
+		ClientService clientService = context.getBean(ClientService.class);
+		ReservationService reservationService = context.getBean(ReservationService.class);
 
 		long id_client = Long.parseLong(request.getParameter("id"));
 		Client client = null;

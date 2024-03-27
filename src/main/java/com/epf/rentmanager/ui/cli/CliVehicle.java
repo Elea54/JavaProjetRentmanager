@@ -1,8 +1,12 @@
 package com.epf.rentmanager.ui.cli;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Vehicle;
+import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,7 +14,9 @@ import java.util.Scanner;
 public class CliVehicle {
     public CliVehicle() {
     }
-    VehicleService vehicleService = VehicleService.getInstance();
+    ApplicationContext context = new
+            AnnotationConfigApplicationContext(AppConfiguration.class);
+    VehicleService vehicleService = context.getBean(VehicleService.class);
 
     public void listAllVehicles() throws ServiceException {
         List<Vehicle> allVehiculesList = vehicleService.findAll();

@@ -1,8 +1,11 @@
 package com.epf.rentmanager.servlet;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +28,9 @@ public class VehicleCreateServlet extends HttpServlet {
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse
 			response) throws ServletException, IOException {
-		VehicleService vehicleService = VehicleService.getInstance();
+		ApplicationContext context = new
+				AnnotationConfigApplicationContext(AppConfiguration.class);
+		VehicleService vehicleService = context.getBean(VehicleService.class);
 
 		String constructeur = request.getParameter("manufacturer");
 		String modele = request.getParameter("modele");

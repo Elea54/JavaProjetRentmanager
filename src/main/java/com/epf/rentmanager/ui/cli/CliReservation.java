@@ -1,8 +1,11 @@
 package com.epf.rentmanager.ui.cli;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.service.ReservationService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -17,7 +20,9 @@ public class CliReservation {
 
     private CliCLient cliCLient = new CliCLient();
     private CliVehicle cliVehicle = new CliVehicle();
-    private ReservationService reservationService = ReservationService.getInstance();
+    ApplicationContext context = new
+            AnnotationConfigApplicationContext(AppConfiguration.class);
+    ReservationService reservationService = context.getBean(ReservationService.class);
 
     public void createReservation(Scanner scanner) throws ServiceException {
         boolean dateFormatIsGood = false;

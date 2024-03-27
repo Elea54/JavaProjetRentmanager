@@ -1,5 +1,6 @@
 package com.epf.rentmanager.servlet;
 
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
@@ -7,6 +8,8 @@ import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,8 +32,11 @@ public class ReservationCreateServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		VehicleService vehicleService = VehicleService.getInstance();
-		ClientService clientService = ClientService.getInstance();
+		ApplicationContext context = new
+				AnnotationConfigApplicationContext(AppConfiguration.class);
+		ClientService clientService = context.getBean(ClientService.class);
+		VehicleService vehicleService = context.getBean(VehicleService.class);
+
 		List<Vehicle> vehiclesList = null;
 		List<Client> clientsList = null;
 		try {
@@ -49,7 +55,9 @@ public class ReservationCreateServlet extends HttpServlet {
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse
 			response) throws ServletException, IOException {
-		ReservationService reservationService = ReservationService.getInstance();
+		ApplicationContext context = new
+				AnnotationConfigApplicationContext(AppConfiguration.class);
+		ReservationService reservationService = context.getBean(ReservationService.class);
 		long vehicle_id = Long.parseLong(request.getParameter("car"));
 		long client_id = Long.parseLong(request.getParameter("client"));
 
