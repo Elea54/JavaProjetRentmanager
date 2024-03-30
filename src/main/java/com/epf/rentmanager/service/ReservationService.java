@@ -7,8 +7,10 @@ import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicle;
 import org.springframework.stereotype.Service;
 
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -21,12 +23,33 @@ public class ReservationService {
 
 	
 	public long create(Reservation reservation) throws ServiceException {
-		try{
-			reservationDao.create(reservation);
-		}catch (DaoException e){
-			throw new ServiceException(e.getMessage());
+		List<Reservation> reservationsWithVehicule = this.findByVehicleId(reservation.getVehicle_id());
+		boolean isSameDay = false;
+		Period resaPeriode = Period.between(reservation.getDebut(), reservation.getFin());
+		int savoir = resaPeriode.getDays();
+
+		for (Reservation reservationSelectionnee : reservationsWithVehicule){
+			if(reservation.getDebut().isAfter(reservationSelectionnee.getFin()) || reservation.getFin().isBefore(reservationSelectionnee.getDebut())){
+				isSameDay = false;
+			}else {
+				isSameDay = true;
+				break;
+			}
 		}
-		return reservation.getId();
+		if (isSameDay){
+			throw new ServiceException("Les périodes se superposent.");
+		}
+		else if(resaPeriode.getDays() >= 7 || resaPeriode.getMonths() != 0 || resaPeriode.getYears() != 0){
+			throw new ServiceException("La période dépasse sept jours.");
+		}
+		else{
+			try{
+				reservationDao.create(reservation);
+			}catch (DaoException e){
+				throw new ServiceException(e.getMessage());
+			}
+			return reservation.getId();
+		}
 	}
 
 	public long delete(long reservationId) throws ServiceException{

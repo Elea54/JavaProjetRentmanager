@@ -2,10 +2,6 @@ package com.ensta.rentmanager.service;
 
 import com.epf.rentmanager.dao.ClientDao;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
@@ -13,8 +9,9 @@ import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.service.ClientService;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -75,6 +72,24 @@ public class ClientServiceTest {
         when(clientDao.create(client)).thenReturn(client.getId());
         long result = clientService.create(client);
         assertNotNull(result);
+    }
+    @Test
+    void create_should_return_a_service_exeption_because_of_age() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse("2022-05-02", formatter);
+        Client client = new Client(1,"Nom","Prénom","email@gmail.com",date);
+        assertThrows(ServiceException.class, () -> {
+            clientService.create(client);
+        });
+    }
+    @Test
+    void create_should_return_a_service_exeption_because_of_name_lenght() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse("2002-05-02", formatter);
+        Client client = new Client(1,"No","Pr","email@gmail.com",date);
+        assertThrows(ServiceException.class, () -> {
+            clientService.create(client);
+        });
     }
 
     @Test
@@ -147,5 +162,6 @@ public class ClientServiceTest {
         long result = clientService.count();
         assertNotNull(result);
     }
+
 
 }

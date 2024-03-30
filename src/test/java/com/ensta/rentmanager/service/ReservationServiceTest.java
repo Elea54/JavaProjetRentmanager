@@ -66,11 +66,21 @@ public class ReservationServiceTest {
     void create_should_return_a_reservation_id() throws DaoException, ServiceException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate debut = LocalDate.parse("2024-05-02", formatter);
-        LocalDate fin = LocalDate.parse("2024-06-02", formatter);
+        LocalDate fin = LocalDate.parse("2024-05-04", formatter);
         Reservation reservation = new Reservation(0,0,0,debut,fin);
         when(reservationDao.create(reservation)).thenReturn(reservation.getId());
         long result = reservationService.create(reservation);
         assertNotNull(result);
+    }
+    @Test
+    void create_should_throw_service_exception_because_of_period_of_days_too_long() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate debut = LocalDate.parse("2024-05-02", formatter);
+        LocalDate fin = LocalDate.parse("2024-06-03", formatter);
+        Reservation reservation = new Reservation(0,0,0,debut,fin);
+        assertThrows(ServiceException.class, () -> {
+            reservationService.create(reservation);
+        });
     }
 
     @Test

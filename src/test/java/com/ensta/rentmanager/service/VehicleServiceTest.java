@@ -4,6 +4,7 @@ import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.dao.VehicleDao;
 import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,6 +65,21 @@ public class VehicleServiceTest {
         when(vehicleDao.create(vehicle)).thenReturn(vehicle.getId());
         long result = vehicleService.create(vehicle);
         assertNotNull(result);
+    }
+
+    @Test
+    void create_should_throw_service_exeption_because_of_seat_number_max()  {
+        Vehicle vehicle = new Vehicle(0, "Peugeot", "206+", 11);
+        assertThrows(ServiceException.class, () -> {
+            vehicleService.create(vehicle);
+        });
+    }
+@Test
+    void create_should_throw_service_exeption_because_of_seat_number_min()  {
+        Vehicle vehicle = new Vehicle(0, "Peugeot", "206+", 1);
+        assertThrows(ServiceException.class, () -> {
+            vehicleService.create(vehicle);
+        });
     }
 
     @Test

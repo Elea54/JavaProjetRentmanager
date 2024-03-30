@@ -1,6 +1,7 @@
 package com.epf.rentmanager.service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.epf.rentmanager.dao.ClientDao;
@@ -24,15 +25,31 @@ public class ClientService {
 	}
 	
 	public long create(Client client) throws ServiceException {
+		long ageClient = LocalDate.now().getYear() - client.getNaissance().getYear();
+		List<Client> clients = this.findAll();
+		boolean emailExiste = false;
+		for (Client clientSelected : clients) {
+			if (clientSelected.getEmail().equals(client.getEmail())) {
+				emailExiste = true;
+				break;
+			}
+		}
 		if(client.getNom()==null || client.getPrenom() == null){
 			throw new ServiceException("Le nom ou le prenom du client est nul.");
+		} else if(ageClient < 18){
+			throw new ServiceException("Le client est trop jeune.");
+		} else if(client.getNom().length() < 3 || client.getPrenom().length() < 3){
+			throw new ServiceException("Le nom ou le prénom est trop court (inférieur à 3 lettres).");
+		} else if (emailExiste) {
+			throw new ServiceException("L'adresse e-mail existe déjà.");
+		} else{
+			try{
+				clientDao.create(client);
+			}catch (DaoException e){
+				throw new ServiceException(e.getMessage());
+			}
+			return client.getId();
 		}
-		try{
-			clientDao.create(client);
-		}catch (DaoException e){
-			throw new ServiceException(e.getMessage());
-		}
-		return client.getId();
 	}
 	public long delete(Client client) throws ServiceException{
 		try{

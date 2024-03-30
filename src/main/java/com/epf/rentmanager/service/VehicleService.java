@@ -28,9 +28,10 @@ public class VehicleService {
 	public long create(Vehicle vehicle) throws ServiceException {
 		if(vehicle.getConstructeur() == null){
 			throw new ServiceException("Le constructeur du véhicule est nul.");
-		}
-		else if (vehicle.getNb_places()<1){
-			throw new ServiceException("le nombre de places est inférieur à 1");
+		} else if (vehicle.getModele() == null) {
+			throw new ServiceException("Le modèle du véhicule est nul.");
+		} else if (vehicle.getNb_places() < 2 || vehicle.getNb_places() > 9){
+			throw new ServiceException("le nombre de places est inférieur à 2 ou supérieur à 9");
 		}
 		try{
 			vehicleDao.create(vehicle);
