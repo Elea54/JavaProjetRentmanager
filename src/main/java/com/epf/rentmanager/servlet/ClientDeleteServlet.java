@@ -12,11 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-@WebServlet("/users")
-public class ClientListServlet extends HttpServlet {
+@WebServlet("/users/delete")
+public class ClientDeleteServlet extends HttpServlet {
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	ClientService clientService;
 	@Override
@@ -25,16 +31,30 @@ public class ClientListServlet extends HttpServlet {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Client> listClients = null;
+		long id_client = Long.parseLong(request.getParameter("id"));
+		Client client = null;
         try {
-            listClients = clientService.findAll();
+            client = clientService.findById(id_client);
+
         } catch (ServiceException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
-		request.setAttribute("clients", listClients);
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
+		request.setAttribute("client", client);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/delete.jsp").forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		long clientId = Long.parseLong(request.getParameter("clientId"));
+		if(clientId >= 0){
+			try {
+				Client client = clientService.findById(clientId);
+				clientService.delete(client);
+				response.sendRedirect("/rentmanager/users");
+			} catch (ServiceException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }
