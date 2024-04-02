@@ -78,9 +78,10 @@ public class ReservationCreateServlet extends HttpServlet {
 		Reservation reservation = new Reservation(0, client_id, vehicle_id, debut, fin);
 		try {
 			reservationService.create(reservation);
+			response.sendRedirect("/rentmanager/rents");
 		} catch (ServiceException e) {
-			throw new RuntimeException(e.getMessage());
+			request.setAttribute("errorMessage", "Erreur lors de la création du client : " + e.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/create.jsp").forward(request, response);
 		}
-		response.sendRedirect("/rentmanager/rents");
 	}
 }

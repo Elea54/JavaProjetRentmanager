@@ -46,9 +46,10 @@ public class VehicleCreateServlet extends HttpServlet {
 		Vehicle vehicle = new Vehicle(0, constructeur, modele, nb_places);
         try {
             vehicleService.create(vehicle);
-        } catch (ServiceException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-		response.sendRedirect("/rentmanager/cars");
+			response.sendRedirect("/rentmanager/cars");
+		} catch (ServiceException e) {
+			request.setAttribute("errorMessage", "Erreur lors de la création du client : " + e.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
+		}
     }
 	}

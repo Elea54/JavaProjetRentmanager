@@ -74,6 +74,11 @@
                             </div>
                             <!-- /.box-footer -->
                         </form>
+                        <c:if test="${errorMessage != null}">
+                            <div class="alert alert-danger">
+                                    ${errorMessage}
+                            </div>
+                        </c:if>
                     </div>
                     <!-- /.box -->
                 </div>

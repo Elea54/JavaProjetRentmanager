@@ -53,9 +53,10 @@ public class ClientCreateServlet extends HttpServlet {
 		Client client = new Client(0, nom, prenom, email, date);
 		try {
 			clientService.create(client);
+			response.sendRedirect("/rentmanager/users");
 		} catch (ServiceException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-		response.sendRedirect("/rentmanager/users");
+			request.setAttribute("errorMessage", "Erreur lors de la création du client : " + e.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/create.jsp").forward(request, response);
+        }
 	}
 }

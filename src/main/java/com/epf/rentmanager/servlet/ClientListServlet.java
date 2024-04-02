@@ -49,7 +49,7 @@ public class ClientListServlet extends HttpServlet {
 			} catch (ServiceException e) {
 				throw new RuntimeException(e);
 			}
-			response.sendRedirect("/rentmanager/home");
 		}
+
 	}
 }
