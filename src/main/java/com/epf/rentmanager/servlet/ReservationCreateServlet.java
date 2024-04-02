@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet("/rents/create")
@@ -81,7 +80,7 @@ public class ReservationCreateServlet extends HttpServlet {
 			response.sendRedirect("/rentmanager/rents");
 		} catch (ServiceException e) {
 			request.setAttribute("errorMessage", "Erreur lors de la création du client : " + e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/create.jsp").forward(request, response);
+			doGet(request, response);
 		}
 	}
 }
