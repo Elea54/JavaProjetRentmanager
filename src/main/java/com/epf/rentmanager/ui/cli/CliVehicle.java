@@ -3,7 +3,6 @@ package com.epf.rentmanager.ui.cli;
 import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Vehicle;
-import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

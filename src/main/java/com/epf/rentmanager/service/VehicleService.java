@@ -2,15 +2,12 @@ package com.epf.rentmanager.service;
 
 import java.util.List;
 
-import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.dao.VehicleDao;
 import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service

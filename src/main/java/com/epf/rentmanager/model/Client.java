@@ -1,6 +1,5 @@
 package com.epf.rentmanager.model;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class Client {

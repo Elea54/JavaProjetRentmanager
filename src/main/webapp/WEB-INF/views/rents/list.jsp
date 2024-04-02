@@ -1,4 +1,3 @@
-<%@ page import="com.epf.rentmanager.servlet.ReservationListServlet" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html>
