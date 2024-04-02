@@ -55,8 +55,7 @@
                                         <c:forEach items="${reservations}" var="reservation">
                                             <tr>
                                                 <td>${reservation.id}</td>
-                                                <td>${reservation.vehicle_id}</td>
-                                                <%--                                        <td>${ReservationListServlet.getClientId(reservation.client_id)}</td>--%>
+                                                <td>${reservation.vehicle.constructeur} ${reservation.vehicle.modele}</td>
                                                 <td>${reservation.debut}</td>
                                                 <td>${reservation.fin}</td>
                                                 <td>

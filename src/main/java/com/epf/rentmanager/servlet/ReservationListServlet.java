@@ -4,6 +4,7 @@ import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exeptions.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
@@ -30,6 +31,11 @@ public class ReservationListServlet extends HttpServlet {
 
 	@Autowired
 	ReservationService reservationService;
+	@Autowired
+	ClientService clientService;
+	@Autowired
+	VehicleService vehicleService;
+
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -45,9 +51,19 @@ public class ReservationListServlet extends HttpServlet {
 		} catch (ServiceException e) {
 			throw new RuntimeException(e.getMessage());
 		}
+		for (Reservation reservation : reservationsList){
+            try {
+                Client client = clientService.findById(reservation.getClient_id());
+				Vehicle vehicle = vehicleService.findById(reservation.getVehicle_id());
+				reservation.setClient(client);
+				reservation.setVehicle(vehicle);
+			} catch (ServiceException e) {
+				throw new RuntimeException(e);
+			}
+
+		}
 		request.setAttribute("reservations", reservationsList);
 
         this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/list.jsp").forward(request, response);
 	}
-
 }

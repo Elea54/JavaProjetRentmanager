@@ -13,6 +13,10 @@ public class Reservation {
     private LocalDate debut;
     private LocalDate fin;
 
+    private Client client;
+
+    private Vehicle vehicle;
+
     public Reservation() {
     }
 
@@ -64,6 +68,22 @@ public class Reservation {
         this.fin = fin;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -72,6 +92,8 @@ public class Reservation {
                 ", vehicle_id=" + vehicle_id +
                 ", debut=" + debut +
                 ", fin=" + fin +
+                ", client=" + client +
+                ", vehicle=" + vehicle +
                 '}';
     }
 }
