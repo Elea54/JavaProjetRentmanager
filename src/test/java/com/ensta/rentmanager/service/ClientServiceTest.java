@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,6 +88,21 @@ public class ClientServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse("2002-05-02", formatter);
         Client client = new Client(1,"No","Pr","email@gmail.com",date);
+        assertThrows(ServiceException.class, () -> {
+            clientService.create(client);
+        });
+    }
+
+    @Test
+    void create_should_return_a_service_exeption_because_email_already_exist() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse("2002-05-02", formatter);
+        List<Client> clientsExistantsList = new ArrayList<>();
+        clientsExistantsList.add(new Client(0, "Nom2", "Prenom2", "email@gmail.com", date));
+        ClientDao clientDaoMock = mock(ClientDao.class);
+        when(clientDaoMock.findAll()).thenReturn(clientsExistantsList);
+        ClientService clientService = new ClientService(clientDaoMock, reservationDao);
+        Client client = new Client(1,"Nom","Prenom","email@gmail.com",date);
         assertThrows(ServiceException.class, () -> {
             clientService.create(client);
         });

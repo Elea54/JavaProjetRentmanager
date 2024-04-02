@@ -3,6 +3,7 @@ package com.ensta.rentmanager.service;
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exeptions.DaoException;
 import com.epf.rentmanager.exeptions.ServiceException;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ReservationService;
@@ -14,13 +15,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -59,7 +62,7 @@ public class ReservationServiceTest {
         LocalDate debut = LocalDate.parse("2024-05-02", formatter);
         LocalDate fin = LocalDate.parse("2024-06-02", formatter);
         Reservation reservation = new Reservation(0,0,0,debut,fin);
-        when(this.reservationDao.create(reservation)).thenThrow(DaoException.class);
+        lenient().when(this.reservationDao.create(reservation)).thenThrow(DaoException.class);
         assertThrows(ServiceException.class, () -> reservationService.create(reservation));
     }
     @Test
@@ -73,10 +76,59 @@ public class ReservationServiceTest {
         assertNotNull(result);
     }
     @Test
+    void create_should_throw_service_exception_because_of_period_superposition() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Reservation> reservationsExistantes = new ArrayList<>();
+        reservationsExistantes.add(new Reservation(0, 0, 0, LocalDate.parse("2024-01-01", formatter), LocalDate.parse("2024-01-06", formatter)));
+        ReservationDao reservationDaoMock = mock(ReservationDao.class);
+        when(reservationDaoMock.findResaByVehicleId(anyLong())).thenReturn(reservationsExistantes);
+        ReservationService reservationService = new ReservationService(reservationDaoMock);
+        LocalDate debut = LocalDate.parse("2024-01-02", formatter);
+        LocalDate fin = LocalDate.parse("2024-01-03", formatter);
+        Reservation reservation = new Reservation(0,0,0,debut,fin);
+        assertThrows(ServiceException.class, () -> {
+            reservationService.create(reservation);
+        });
+    }
+
+    @Test
+    void create_should_throw_service_exception_because_of_date_order() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate debut = LocalDate.parse("2024-06-02", formatter);
+        LocalDate fin = LocalDate.parse("2024-05-03", formatter);
+        Reservation reservation = new Reservation(0,0,0,debut,fin);
+        assertThrows(ServiceException.class, () -> {
+            reservationService.create(reservation);
+        });
+    }
+
+    @Test
     void create_should_throw_service_exception_because_of_period_of_days_too_long() throws DaoException, ServiceException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate debut = LocalDate.parse("2024-05-02", formatter);
         LocalDate fin = LocalDate.parse("2024-06-03", formatter);
+        Reservation reservation = new Reservation(0,0,0,debut,fin);
+        assertThrows(ServiceException.class, () -> {
+            reservationService.create(reservation);
+        });
+    }
+
+    @Test
+    void create_should_throw_service_exception_because_of_period_30_days_max() throws DaoException, ServiceException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Reservation> reservationsExistantes = new ArrayList<>();
+        reservationsExistantes.add(new Reservation(0, 0, 0, LocalDate.parse("2024-04-01", formatter), LocalDate.parse("2024-04-07", formatter)));
+        reservationsExistantes.add(new Reservation(0, 0, 0, LocalDate.parse("2024-04-08", formatter), LocalDate.parse("2024-04-14", formatter)));
+        reservationsExistantes.add(new Reservation(0, 0, 0, LocalDate.parse("2024-04-15", formatter), LocalDate.parse("2024-04-21", formatter)));
+        reservationsExistantes.add(new Reservation(0, 0, 0, LocalDate.parse("2024-04-22", formatter), LocalDate.parse("2024-04-28", formatter)));
+        reservationsExistantes.add(new Reservation(0, 0, 0, LocalDate.parse("2024-04-29", formatter), LocalDate.parse("2024-05-05", formatter)));
+
+
+        ReservationDao reservationDaoMock = mock(ReservationDao.class);
+        when(reservationDaoMock.findResaByVehicleId(anyLong())).thenReturn(reservationsExistantes);
+        ReservationService reservationService = new ReservationService(reservationDaoMock);
+        LocalDate debut = LocalDate.parse("2024-05-06", formatter);
+        LocalDate fin = LocalDate.parse("2024-05-12", formatter);
         Reservation reservation = new Reservation(0,0,0,debut,fin);
         assertThrows(ServiceException.class, () -> {
             reservationService.create(reservation);
@@ -127,7 +179,6 @@ public class ReservationServiceTest {
         List<Reservation> reservationsOk = Arrays.asList(
                 new Reservation(0,0,0,debut,fin)
         );
-
         when(reservationDao.findResaByVehicleId(0)).thenReturn(reservationsOk);
         List<Reservation> result = reservationService.findByVehicleId(0);
         assertNotNull(result);

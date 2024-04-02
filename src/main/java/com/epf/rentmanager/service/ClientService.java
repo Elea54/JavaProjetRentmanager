@@ -19,7 +19,7 @@ public class ClientService {
 
 	private ReservationDao reservationDao;
 
-	private ClientService(ClientDao clientDao, ReservationDao reservationDao){
+	public ClientService(ClientDao clientDao, ReservationDao reservationDao){
 		this.clientDao = clientDao;
 		this.reservationDao = reservationDao;
 	}

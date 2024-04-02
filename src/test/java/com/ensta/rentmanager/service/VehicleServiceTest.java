@@ -68,6 +68,22 @@ public class VehicleServiceTest {
     }
 
     @Test
+    void create_should_throw_service_exeption_because_constructeur_null()  {
+        Vehicle vehicle = new Vehicle(0, "", "206+", 5);
+        assertThrows(ServiceException.class, () -> {
+            vehicleService.create(vehicle);
+        });
+    }
+
+    @Test
+    void create_should_throw_service_exeption_because_modele_null()  {
+        Vehicle vehicle = new Vehicle(0, "Peugeot", "", 5);
+        assertThrows(ServiceException.class, () -> {
+            vehicleService.create(vehicle);
+        });
+    }
+
+    @Test
     void create_should_throw_service_exeption_because_of_seat_number_max()  {
         Vehicle vehicle = new Vehicle(0, "Peugeot", "206+", 11);
         assertThrows(ServiceException.class, () -> {
