@@ -48,9 +48,10 @@ public class ClientCreateServlet extends HttpServlet {
 		String prenom = request.getParameter("first_name");
 		String email = request.getParameter("email");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate date = LocalDate.parse("2002-05-02", formatter);
+		String date_debut = request.getParameter("birth");
+		LocalDate date_naissance = LocalDate.parse(date_debut, formatter);
 
-		Client client = new Client(0, nom, prenom, email, date);
+		Client client = new Client(0, nom, prenom, email, date_naissance);
 		try {
 			clientService.create(client);
 			response.sendRedirect("/rentmanager/users");
